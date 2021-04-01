@@ -1,0 +1,21 @@
+server:
+  port: 36003
+
+spring:
+  application:
+    name: zuul
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+      discovery:
+        enabled: true
+        register: true
+
+zuul:
+  routes:
+    blog:
+      serviceId: blog
+      path: /my-blog/**
+    backsystem:
+      serviceId: back-system
+      path: /back-system/**

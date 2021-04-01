@@ -1,0 +1,30 @@
+server:
+  port: 36005
+
+spring:
+  application:
+    name: blog
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+      discovery:
+        register: true
+        enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true&&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml,classpath*:/com/scu/lcw/blog/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
