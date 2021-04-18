@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: blog
+    name: my-blog
 
   redis:
     host: 127.0.0.1

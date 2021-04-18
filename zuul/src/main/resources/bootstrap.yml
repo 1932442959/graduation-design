@@ -11,11 +11,26 @@ spring:
         enabled: true
         register: true
 
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000
+
 zuul:
   routes:
     blog:
-      serviceId: blog
+      serviceId: my-blog
       path: /my-blog/**
     backsystem:
       serviceId: back-system
       path: /back-system/**
+  sensitive-headers:
+
+
