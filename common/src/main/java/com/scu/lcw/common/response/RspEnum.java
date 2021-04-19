@@ -22,6 +22,8 @@ public enum RspEnum {
 
     error_validate_email(9506, "邮箱验证码错误"),
 
+    error_time_not_enough(9507, "请60s后再尝试"),
+
     error_password(9502, "密码错误");
 
     private int code;

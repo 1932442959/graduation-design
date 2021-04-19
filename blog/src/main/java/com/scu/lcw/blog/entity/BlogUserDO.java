@@ -41,6 +41,8 @@ public class BlogUserDO {
 
     private String enabled;
 
+    private String userAvator;
+
     public static BlogUserDO buildBlogUserDO(RegisterRequest registerRequest) {
         return new BlogUserDO()
                 .setUserName(registerRequest.getRegisterName())

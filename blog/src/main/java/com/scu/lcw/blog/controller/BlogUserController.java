@@ -36,4 +36,9 @@ public class BlogUserController extends BaseController {
         log.info("registerRequest: " + registerRequest.toString());
         return blogUserService.getEmailValidateStr(registerRequest, request);
     }
+
+    @RequestMapping("/getcurrent")
+    public Result getCurrentBlogUser(HttpServletRequest request) {
+        return Result.data(this.getBlogUserMessage(request));
+    }
 }

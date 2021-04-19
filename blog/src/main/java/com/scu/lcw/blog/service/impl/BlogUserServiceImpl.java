@@ -8,16 +8,20 @@ import com.scu.lcw.blog.pojo.request.LoginRequest;
 import com.scu.lcw.blog.pojo.request.RegisterRequest;
 import com.scu.lcw.blog.service.BlogUserService;
 import com.scu.lcw.blog.util.MailUtils;
+import com.scu.lcw.blog.util.RequestUtils;
 import com.scu.lcw.common.response.Result;
 import com.scu.lcw.common.response.RspEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -28,6 +32,12 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
 
     @Resource
     private MailUtils mailUtils;
+
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private RequestUtils requestUtils;
 
     @Override
     public Result login(LoginRequest loginRequest, HttpServletRequest request) {
@@ -57,6 +67,14 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
     @Override
     public Result getEmailValidateStr(RegisterRequest registerRequest, HttpServletRequest request) {
         log.info("registerRequest: " + registerRequest.toString());
+        String ipAddress = requestUtils.getIpAddress(request);
+        log.info("request-ipAddress: " + ipAddress);
+
+        String validateStrAntiBrushKey = "validateStrAntiBrushKeyIp " + ipAddress;
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        if (valueOperations.get(validateStrAntiBrushKey) != null) {
+            return Result.fail(RspEnum.error_time_not_enough);
+        }
 
         boolean sameUser = blogUserMapper.selectList(new QueryWrapper<>())
                 .stream()
@@ -68,6 +86,8 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
 
         if (validateFormCondition(registerRequest)) {
             String validateStr = mailUtils.sendMail(registerRequest.getEmail());
+            //60s过期 防刷
+            valueOperations.set(validateStrAntiBrushKey, 1, 60, TimeUnit.SECONDS);
             request.getSession().setAttribute(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
             //打印该SessionId下的注册用户名对应验证码SessionKey
             log.info(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
