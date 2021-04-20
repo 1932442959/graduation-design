@@ -1,0 +1,174 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : Mysql_Connect
+ Source Server Type    : MySQL
+ Source Server Version : 80022
+ Source Host           : localhost:3306
+ Source Schema         : blog
+
+ Target Server Type    : MySQL
+ Target Server Version : 80022
+ File Encoding         : 65001
+
+ Date: 20/04/2021 17:42:19
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for article
+-- ----------------------------
+DROP TABLE IF EXISTS `article`;
+CREATE TABLE `article`  (
+  `article_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '文章id',
+  `article_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '文章标题',
+  `article_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '文章描述',
+  `article_label` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '文章标签',
+  `cover_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '文章封面地址',
+  `first_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '文章首图地址',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '文章创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '文章更新时间',
+  `article_like` int(0) NULL DEFAULT NULL COMMENT '文章点赞数',
+  `article_dislike` int(0) NULL DEFAULT NULL COMMENT '文章点踩数',
+  `article_rank` double(11, 1) NULL DEFAULT NULL COMMENT '文章评分',
+  `article_content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '文章内容',
+  `article_click` bigint(0) NULL DEFAULT NULL COMMENT '文章点击量',
+  `article_type` enum('REPRINT','ORIGINAL') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '转载/原创',
+  PRIMARY KEY (`article_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of article
+-- ----------------------------
+INSERT INTO `article` VALUES (1, '这是一个悲伤的故事', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '个人日记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/e46fdc2c6844093251fd8fe296691610434daa31这是一个悲伤的故事1.jpg?versionId=CAEQDhiBgIDQv8apxxciIDU5MTFmZDIyOWNkYTQwZTRiMTJlMTg0MmZiZWYyMTk3', NULL, '2021-04-19 21:53:53', '2021-04-19 21:55:51', 10, 0, 4.8, NULL, 10, 'ORIGINAL');
+INSERT INTO `article` VALUES (2, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+INSERT INTO `article` VALUES (3, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+INSERT INTO `article` VALUES (4, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+INSERT INTO `article` VALUES (5, '这是一个悲伤的故事', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '个人日记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/e46fdc2c6844093251fd8fe296691610434daa31这是一个悲伤的故事1.jpg?versionId=CAEQDhiBgIDQv8apxxciIDU5MTFmZDIyOWNkYTQwZTRiMTJlMTg0MmZiZWYyMTk3', NULL, '2021-04-19 21:53:53', '2021-04-19 21:55:51', 10, 0, 4.8, NULL, 10, 'ORIGINAL');
+INSERT INTO `article` VALUES (6, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+INSERT INTO `article` VALUES (7, '这是一个悲伤的故事', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '个人日记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/e46fdc2c6844093251fd8fe296691610434daa31这是一个悲伤的故事1.jpg?versionId=CAEQDhiBgIDQv8apxxciIDU5MTFmZDIyOWNkYTQwZTRiMTJlMTg0MmZiZWYyMTk3', NULL, '2021-04-19 21:53:53', '2021-04-19 21:55:51', 10, 0, 4.8, NULL, 10, 'ORIGINAL');
+INSERT INTO `article` VALUES (8, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+INSERT INTO `article` VALUES (9, '这是一个悲伤的故事', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '个人日记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/e46fdc2c6844093251fd8fe296691610434daa31这是一个悲伤的故事1.jpg?versionId=CAEQDhiBgIDQv8apxxciIDU5MTFmZDIyOWNkYTQwZTRiMTJlMTg0MmZiZWYyMTk3', NULL, '2021-04-19 21:53:53', '2021-04-19 21:55:51', 10, 0, 4.8, NULL, 10, 'ORIGINAL');
+INSERT INTO `article` VALUES (10, '学习笔记', '这真是一个悲伤的故事，故事还得从2021年的4月5日说起，那天晚上，我做了一个梦，梦到了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '学习笔记', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/article/99c5127f0e754b2fda4663181632efabf875d552学习笔记2.jpg?versionId=CAEQDhiBgMDYsdipxxciIDhiOGU3OWQ4OTJmNDRlNmViZjk0YzE5MmY1OTc5NDc0', NULL, '2021-04-19 21:57:56', '2021-04-19 21:57:59', 20, 1, 4.7, NULL, 30, 'ORIGINAL');
+
+-- ----------------------------
+-- Table structure for blog_user
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_user`;
+CREATE TABLE `blog_user`  (
+  `user_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `user_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `user_netname` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户昵称',
+  `user_like_article` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '用户点赞文章id',
+  `user_dislike_article` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '用户点踩文章id',
+  `user_like_comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '用户点赞评论id',
+  `user_dislike_comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '用户点踩评论id',
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `user_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `enabled` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Y/N',
+  `user_avator` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_user
+-- ----------------------------
+INSERT INTO `blog_user` VALUES (1, 'admin', 'admin', 'Joker', NULL, NULL, NULL, NULL, '2021-04-18 18:20:35', '1932442959@qq.com', 'Y', NULL);
+INSERT INTO `blog_user` VALUES (2, 'lucw', 'HYSBEST1234', 'lucw', NULL, NULL, NULL, NULL, '2021-04-18 21:41:39', '1932442959@qq.com', 'Y', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/avator/u=2354015123,2034537159&fm=26&gp=0lucw.jpg?versionId=CAEQDhiBgMCbrdqnxxciIDEwYzczZTg4ZDVhNjQxNjk4YWQ0NjA0YTQwMjFiNWVl');
+INSERT INTO `blog_user` VALUES (4, 'lucongwen', 'ab58675286499**', 'lucongwen', NULL, NULL, NULL, NULL, '2021-04-18 18:57:30', '1932442959@qq.com', 'Y', NULL);
+INSERT INTO `blog_user` VALUES (5, 'lucongwen123', 'ab@123', 'lucongwen123', NULL, NULL, NULL, NULL, '2021-04-19 11:22:11', '1932442959@qq.com', 'Y', NULL);
+
+-- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`  (
+  `comment_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '评论id',
+  `comment_like` int(0) NULL DEFAULT NULL COMMENT '评论点赞',
+  `comment_dislike` int(0) NULL DEFAULT NULL COMMENT '评论点踩',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '父节点id',
+  `comment_netname` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '评论作者昵称',
+  `comment_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '评论作者用户名',
+  `comment_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '评论内容',
+  `refrence_id` int(0) NULL DEFAULT NULL COMMENT '关联的id',
+  `comment_type` enum('DAILY','ARTICLE') CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '评论类型',
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`comment_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for daily
+-- ----------------------------
+DROP TABLE IF EXISTS `daily`;
+CREATE TABLE `daily`  (
+  `daily_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '日记id',
+  `daily_like` int(0) NULL DEFAULT NULL COMMENT '日记点赞',
+  `daily_dislike` int(0) NULL DEFAULT NULL COMMENT '日记点踩',
+  `daily_content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '日记内容',
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`daily_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for label
+-- ----------------------------
+DROP TABLE IF EXISTS `label`;
+CREATE TABLE `label`  (
+  `label_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '标签id',
+  `label_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '标签名称',
+  `label_color` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '标签颜色',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '父节点id',
+  PRIMARY KEY (`label_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of label
+-- ----------------------------
+INSERT INTO `label` VALUES (1, '个人日常', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (2, '个人项目', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (3, '前端学习', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (4, '后端学习', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (5, '大数据^^', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (6, '运维学习', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (7, '软件使用', 'rgb(236, 245, 255)', 0);
+INSERT INTO `label` VALUES (8, '个人日记', 'rgb(236, 245, 255)', 1);
+INSERT INTO `label` VALUES (9, '学习笔记', 'rgb(236, 245, 255)', 1);
+INSERT INTO `label` VALUES (10, '读书笔记', 'rgb(236, 245, 255)', 1);
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message`  (
+  `message_id` int(0) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `user_netname` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `user_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `user_avator` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `message_content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`message_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES (1, 'lucw', 'lucw', '1932442959@qq.com', 'https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/avator/u=2354015123,2034537159&fm=26&gp=0lucw.jpg?versionId=CAEQDhiBgMCbrdqnxxciIDEwYzczZTg4ZDVhNjQxNjk4YWQ0NjA0YTQwMjFiNWVl', '测试测试测试', NULL);
+
+-- ----------------------------
+-- Table structure for report
+-- ----------------------------
+DROP TABLE IF EXISTS `report`;
+CREATE TABLE `report`  (
+  `report_id` int(0) NOT NULL AUTO_INCREMENT COMMENT '公告id',
+  `report_content` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`report_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
