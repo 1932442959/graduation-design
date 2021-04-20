@@ -25,6 +25,11 @@ public class BlogUserController extends BaseController {
         return blogUserService.login(loginRequest, request);
     }
 
+    @RequestMapping("/logout")
+    public void loglout(HttpServletRequest request) {
+        this.removeBlogUserMessage(request);
+    }
+
     @PostMapping("/register")
     public Result register(RegisterRequest registerRequest, HttpServletRequest request) {
         log.info("registerRequest: " + registerRequest.toString());

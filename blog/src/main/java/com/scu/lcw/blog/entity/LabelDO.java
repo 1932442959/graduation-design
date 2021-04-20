@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.scu.lcw.common.response.BaseVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Accessors(chain = true)
 @TableName("label")
-public class LabelDO {
+public class LabelDO extends BaseVO {
 
     @TableId(value = "label_id", type = IdType.AUTO)
     private Long labelId;

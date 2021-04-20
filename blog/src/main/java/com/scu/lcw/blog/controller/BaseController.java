@@ -18,4 +18,8 @@ public class BaseController {
         BlogUserDO currentBlogUser = (BlogUserDO) request.getSession().getAttribute("currentBlogUser");
         return currentBlogUser;
     }
+
+    protected void removeBlogUserMessage(HttpServletRequest request) {
+        request.getSession().removeAttribute("currentBlogUser");
+    }
 }

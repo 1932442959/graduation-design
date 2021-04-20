@@ -12,8 +12,5 @@ import page.BasePage;
  * @date: 2021/4/20 13:54
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
 public class DailyRequest extends BasePage {
 }

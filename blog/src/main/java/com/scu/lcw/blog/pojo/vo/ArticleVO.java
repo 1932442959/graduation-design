@@ -15,7 +15,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class ArticleVO extends BaseVO {
 
-    private Long total;
+    private Integer total;
 
     private List<ArticleDO> articleList;
 

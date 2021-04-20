@@ -11,12 +11,14 @@ import com.scu.lcw.blog.pojo.vo.ArticleVO;
 import com.scu.lcw.blog.service.ArticleService;
 import com.scu.lcw.blog.service.CommentService;
 import com.scu.lcw.blog.util.LocalDateUtils;
+import com.scu.lcw.blog.util.PageUtils;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Resource
     private CommentService commentService;
 
+    @Resource
+    private PageUtils pageUtils;
+
     @Override
     public Result getArticleList(ArticleRequest articleRequest) {
         if (StringUtils.isEmpty(articleRequest.getLabelName())) {
@@ -48,12 +53,10 @@ public class ArticleServiceImpl implements ArticleService {
             return findArticleByParentLabel(label, articleRequest);
         }
 
-        Page<ArticleDO> page = articleMapper.selectPage(
-                new Page(articleRequest.getCurrentPage(), articleRequest.getPageSize()),
+        return convertArticle(articleMapper.selectList(
                 new QueryWrapper<ArticleDO>()
-                        .like("article_label", label.getLabelName()));
-
-        return convertArticle(page);
+                        .like("article_label", label.getLabelName()))
+                , articleRequest);
     }
 
     @Override
@@ -66,12 +69,14 @@ public class ArticleServiceImpl implements ArticleService {
                 .eq("parent_id", label.getLabelId()));
 
         if (childLabelList.size() == 1) {
-            Page<ArticleDO> page = articleMapper.selectPage(
-                    new Page(articleRequest.getCurrentPage(), articleRequest.getPageSize()),
+            articleMapper.selectList(
                     new QueryWrapper<ArticleDO>()
                             .like("article_label", childLabelList.get(0).getLabelName()));
 
-            return convertArticle(page);
+            return convertArticle(articleMapper.selectList(
+                    new QueryWrapper<ArticleDO>()
+                            .like("article_label", childLabelList.get(0).getLabelName()))
+                    , articleRequest);
         }
 
         List<ArticleDO> articleList = childLabelList.stream()
@@ -85,33 +90,27 @@ public class ArticleServiceImpl implements ArticleService {
                         .setArticleCreateTime(localDateUtils.parseCreateTime(articleDO.getCreateTime()))
                         .setArticleUpdateTime(localDateUtils.parseUpdateTime(articleDO.getUpdateTime()))
                 )
-                .limit(articleRequest.getPageSize())
                 .collect(Collectors.toList());
 
-        return Result.data(new ArticleVO()
-                .setArticleList(articleList)
-                .setTotal(articleList.stream().count()));
+        return convertArticle(articleList, articleRequest);
     }
 
     private Result findAllArticle(ArticleRequest articleRequest) {
-        Page<ArticleDO> page = articleMapper.selectPage(
-                new Page(articleRequest.getCurrentPage(), articleRequest.getPageSize()),
-                new QueryWrapper<>()
-        );
-
-        return convertArticle(page);
+        List<ArticleDO> resultList = articleMapper.selectList(new QueryWrapper<>());
+        return convertArticle(resultList, articleRequest);
     }
 
-    private Result convertArticle(Page<ArticleDO> page) {
-        List<ArticleDO> articleList = page.getRecords().stream()
+    private Result convertArticle(List<ArticleDO> articleList, ArticleRequest articleRequest) {
+        List<ArticleDO> resultList = articleList.stream()
                 .map(articleDO -> articleDO
                         .setArticleCreateTime(localDateUtils.parseCreateTime(articleDO.getCreateTime()))
                         .setArticleUpdateTime(localDateUtils.parseUpdateTime(articleDO.getUpdateTime()))
                 )
+                .sorted(Comparator.comparing(ArticleDO::getArticleLike).reversed())
                 .collect(Collectors.toList());
 
         return Result.data(new ArticleVO()
-                .setArticleList(articleList)
-                .setTotal(page.getTotal()));
+                .setArticleList(pageUtils.listPagination(resultList, articleRequest.getCurrentPage(), articleRequest.getPageSize()))
+                .setTotal(resultList.size()));
     }
 }
