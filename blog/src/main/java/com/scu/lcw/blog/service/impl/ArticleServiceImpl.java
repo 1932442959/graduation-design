@@ -9,15 +9,15 @@ import com.scu.lcw.blog.mapper.LabelMapper;
 import com.scu.lcw.blog.pojo.request.ArticleRequest;
 import com.scu.lcw.blog.pojo.vo.ArticleVO;
 import com.scu.lcw.blog.service.ArticleService;
+import com.scu.lcw.blog.service.CommentService;
+import com.scu.lcw.blog.util.LocalDateUtils;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,6 +29,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Resource
     private LabelMapper labelMapper;
+
+    @Resource
+    private LocalDateUtils localDateUtils;
+
+    @Resource
+    private CommentService commentService;
 
     @Override
     public Result getArticleList(ArticleRequest articleRequest) {
@@ -48,6 +54,11 @@ public class ArticleServiceImpl implements ArticleService {
                         .like("article_label", label.getLabelName()));
 
         return convertArticle(page);
+    }
+
+    @Override
+    public Result getArticleComment(ArticleRequest articleRequest) {
+        return Result.data(commentService.findArticleComment(articleRequest.getArticleId()));
     }
 
     private Result findArticleByParentLabel(LabelDO label, ArticleRequest articleRequest) {
@@ -71,8 +82,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .flatMap(List::stream)
                 .distinct()
                 .map(articleDO -> articleDO
-                        .setArticleCreateTime(articleDO.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .setArticleUpdateTime(articleDO.getUpdateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
+                        .setArticleCreateTime(localDateUtils.parseCreateTime(articleDO.getCreateTime()))
+                        .setArticleUpdateTime(localDateUtils.parseUpdateTime(articleDO.getUpdateTime()))
                 )
                 .limit(articleRequest.getPageSize())
                 .collect(Collectors.toList());
@@ -94,8 +105,8 @@ public class ArticleServiceImpl implements ArticleService {
     private Result convertArticle(Page<ArticleDO> page) {
         List<ArticleDO> articleList = page.getRecords().stream()
                 .map(articleDO -> articleDO
-                        .setArticleCreateTime(articleDO.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .setArticleUpdateTime(articleDO.getUpdateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
+                        .setArticleCreateTime(localDateUtils.parseCreateTime(articleDO.getCreateTime()))
+                        .setArticleUpdateTime(localDateUtils.parseUpdateTime(articleDO.getUpdateTime()))
                 )
                 .collect(Collectors.toList());
 

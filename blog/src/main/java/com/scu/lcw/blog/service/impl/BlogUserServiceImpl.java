@@ -89,6 +89,8 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
             //60s过期 防刷
             valueOperations.set(validateStrAntiBrushKey, 1, 60, TimeUnit.SECONDS);
             request.getSession().setAttribute(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
+            //五分钟过期
+            valueOperations.set(getRegisterBlogUserSessionKey(registerRequest, request), validateStr, 300L, TimeUnit.MINUTES);
             //打印该SessionId下的注册用户名对应验证码SessionKey
             log.info(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
             return Result.data(validateStr);
@@ -111,15 +113,14 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
         }
 
         if (validateFormRegisterCondition(registerRequest)) {
-            String validateStr = (String) request.getSession().getAttribute(getRegisterBlogUserSessionKey(registerRequest, request));
-            return doRegisterBlogUser(validateStr, registerRequest);
+            return doRegisterBlogUser(registerRequest, request);
         }
 
         return Result.fail(RspEnum.error_form);
     }
 
     private String getRegisterBlogUserSessionKey(RegisterRequest registerRequest, HttpServletRequest request) {
-        return "registerBlogUser " + registerRequest.getRegisterName() + " sessionId " + request.getSession().getId();
+        return "registerBlogUser " + registerRequest.getRegisterName() + "registerEmail " + registerRequest.getEmail() + " sessionId " + request.getSession().getId();
     }
 
     private boolean validateFormCondition(RegisterRequest registerRequest) {
@@ -141,8 +142,15 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
         return flag;
     }
 
-    private Result doRegisterBlogUser(String validateStr, RegisterRequest registerRequest) {
+    private Result doRegisterBlogUser(RegisterRequest registerRequest, HttpServletRequest request) {
+        //验证码
+        String validateStr = (String) request.getSession().getAttribute(getRegisterBlogUserSessionKey(registerRequest, request));
+        ValueOperations valueOperations = redisTemplate.opsForValue();
         if (validateStr.equals(registerRequest.getValidateEmail())) {
+            //判断是否过期
+            if (valueOperations.get(getRegisterBlogUserSessionKey(registerRequest, request)) == null) {
+                return Result.fail(RspEnum.error_validate_time_out);
+            }
             blogUserMapper.insert(BlogUserDO.buildBlogUserDO(registerRequest));
             return Result.ok();
         }

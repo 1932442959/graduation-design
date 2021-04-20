@@ -7,4 +7,6 @@ public interface ArticleService {
 
     Result getArticleList(ArticleRequest articleRequest);
 
+    Result getArticleComment(ArticleRequest articleRequest);
+
 }

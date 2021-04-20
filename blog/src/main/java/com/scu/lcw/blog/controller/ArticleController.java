@@ -1,6 +1,5 @@
 package com.scu.lcw.blog.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scu.lcw.blog.pojo.request.ArticleRequest;
 import com.scu.lcw.blog.service.ArticleService;
 import com.scu.lcw.common.response.Result;
@@ -20,6 +19,11 @@ public class ArticleController {
 
     @RequestMapping("/getlist")
     public Result getArticleList(ArticleRequest articleRequest) {
+        return articleService.getArticleList(articleRequest);
+    }
+
+    @RequestMapping("/getcomment")
+    public Result getArticleComment(ArticleRequest articleRequest) {
         return articleService.getArticleList(articleRequest);
     }
 }

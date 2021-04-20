@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import page.BasePage;
 
+/**
+ * @author: lucw
+ * @description: 该类的描述
+ * @date: 2021/4/20 13:54
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ArticleRequest extends BasePage {
-
-    private String labelName;
-
-    private Long articleId;
-
+public class DailyRequest extends BasePage {
 }
