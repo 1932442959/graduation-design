@@ -1,16 +1,21 @@
 package com.scu.lcw.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.scu.lcw.blog.controller.BaseController;
 import com.scu.lcw.blog.entity.CommentDO;
 import com.scu.lcw.blog.entity.DailyDO;
 import com.scu.lcw.blog.mapper.CommentMapper;
 import com.scu.lcw.blog.pojo.dto.CommentDTO;
+import com.scu.lcw.blog.pojo.request.CommentRequest;
 import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
 import com.scu.lcw.blog.service.CommentService;
+import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl extends BaseController implements CommentService {
 
     @Resource
     private CommentMapper commentMapper;
@@ -56,6 +61,12 @@ public class CommentServiceImpl implements CommentService {
         return articleComments;
     }
 
+    @Override
+    public Result addDailyComment(CommentRequest commentRequest, HttpServletRequest request) {
+        int insertResult = commentMapper.insert(CommentDO.buildCommentDO(commentRequest, this.getBlogUserMessage(request)));
+        return Result.data(insertResult);
+    }
+
     private List<CommentDO> findAllDailyComment(DailyDO dailyDO) {
         return commentMapper.selectList(new QueryWrapper<CommentDO>()
                 .eq("refrence_id", dailyDO.getDailyId())
@@ -71,6 +82,7 @@ public class CommentServiceImpl implements CommentService {
     private List<CommentDO> convertParent(List<CommentDO> commentList) {
         return commentList.stream()
                 .filter(commentDO -> commentDO.getParentId().equals(0L))
+                .sorted(Comparator.comparing(CommentDO::getCreateTime).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -80,6 +92,7 @@ public class CommentServiceImpl implements CommentService {
                         .eq("parent_id", parentComment.getCommentId()))
                 .stream()
                 .map(CommentDTO::buildCommentDTO)
+                .sorted(Comparator.comparing(CommentDTO::getCreateTime).reversed())
                 .collect(Collectors.toList());
 
         if (childList.size() == 0) {
@@ -87,8 +100,5 @@ public class CommentServiceImpl implements CommentService {
         }
 
         parentComment.setChildList(childList);
-
-        childList.stream()
-                .forEach(this::convertChild);
     }
 }

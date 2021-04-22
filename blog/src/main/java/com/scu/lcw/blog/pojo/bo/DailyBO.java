@@ -22,6 +22,8 @@ public class DailyBO {
 
     private DailyDO dailyDO;
 
+    private Boolean showComment;
+
     private List<CommentDTO> commentList;
 
 }

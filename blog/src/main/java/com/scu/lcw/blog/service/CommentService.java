@@ -2,7 +2,10 @@ package com.scu.lcw.blog.service;
 
 import com.scu.lcw.blog.entity.DailyDO;
 import com.scu.lcw.blog.pojo.dto.CommentDTO;
+import com.scu.lcw.blog.pojo.request.CommentRequest;
+import com.scu.lcw.common.response.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -15,5 +18,7 @@ public interface CommentService {
     List<CommentDTO> findDailyComment(DailyDO dailyDO);
 
     List<CommentDTO> findArticleComment(Long articleId);
+
+    Result addDailyComment(CommentRequest commentRequest, HttpServletRequest request);
 
 }

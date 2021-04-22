@@ -20,4 +20,8 @@ public class LocalDateUtils {
     public String parseUpdateTime(LocalDateTime updateTime) {
         return updateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
+
+    public String dateTimeHHmmss(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).substring(11, 19);
+    }
 }

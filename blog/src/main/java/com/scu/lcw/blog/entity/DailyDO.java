@@ -1,6 +1,7 @@
 package com.scu.lcw.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.scu.lcw.blog.pojo.bo.DailyBO;
@@ -35,6 +36,21 @@ public class DailyDO {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    private String dailyAvator;
+
+    private String dailyUsername;
+
+    private String dailyNetname;
+
+    @TableField(exist = false)
+    private Integer commentLength;
+
+    @TableField(exist = false)
+    private String date;
+
+    @TableField(exist = false)
+    private String dateTime;
 
     public static DailyBO buildDailyVO(DailyDO dailyDO) {
         return new DailyBO().setDailyDO(dailyDO);

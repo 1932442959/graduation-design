@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,9 @@ public class ArticleServiceImpl implements ArticleService {
         return convertArticle(articleMapper.selectList(
                 new QueryWrapper<ArticleDO>()
                         .like("article_label", label.getLabelName()))
+                        .stream()
+                        .filter(articleDO -> Arrays.asList(articleDO.getArticleLabel().split(",")).contains(label.getLabelName()))
+                        .collect(Collectors.toList())
                 , articleRequest);
     }
 
@@ -81,8 +85,12 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleDO> articleList = childLabelList.stream()
                 .map(LabelDO::getLabelName)
-                .map(labelName -> articleMapper.selectList(new QueryWrapper<ArticleDO>()
-                        .like("article_label", labelName))
+                .map(labelName -> articleMapper.selectList(
+                        new QueryWrapper<ArticleDO>()
+                                .like("article_label", labelName))
+                        .stream()
+                        .filter(articleDO -> Arrays.asList(articleDO.getArticleLabel().split(",")).contains(labelName))
+                        .collect(Collectors.toList())
                 )
                 .flatMap(List::stream)
                 .distinct()
@@ -107,6 +115,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .setArticleUpdateTime(localDateUtils.parseUpdateTime(articleDO.getUpdateTime()))
                 )
                 .sorted(Comparator.comparing(ArticleDO::getArticleLike).reversed())
+                .distinct()
                 .collect(Collectors.toList());
 
         return Result.data(new ArticleVO()

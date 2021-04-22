@@ -2,11 +2,13 @@ package com.scu.lcw.blog.pojo.dto;
 
 import com.scu.lcw.blog.entity.CommentDO;
 import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
+import com.scu.lcw.blog.util.LocalDateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,6 +43,18 @@ public class CommentDTO {
 
     private LocalDateTime createTime;
 
+    private String commentAvator;
+
+    private String parentUsername;
+
+    private String parentNetname;
+
+    private String date;
+
+    private String dateTime;
+
+    private boolean showReply;
+
     List<CommentDTO> childList;
 
     public static CommentDTO buildCommentDTO(CommentDO commentDO) {
@@ -54,6 +68,11 @@ public class CommentDTO {
                 .setCommentContent(commentDO.getCommentContent())
                 .setRefrenceId(commentDO.getRefrenceId())
                 .setCommentType(commentDO.getCommentType())
-                .setCreateTime(commentDO.getCreateTime());
+                .setCreateTime(commentDO.getCreateTime())
+                .setCommentAvator(commentDO.getCommentAvator())
+                .setParentNetname(commentDO.getParentNetname())
+                .setParentUsername(commentDO.getParentUsername())
+                .setDate(new LocalDateUtils().parseCreateTime(commentDO.getCreateTime()))
+                .setDateTime(new LocalDateUtils().dateTimeHHmmss(commentDO.getCreateTime()));
     }
 }
