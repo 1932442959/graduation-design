@@ -120,7 +120,7 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
     }
 
     private String getRegisterBlogUserSessionKey(RegisterRequest registerRequest, HttpServletRequest request) {
-        return "registerBlogUser " + registerRequest.getRegisterName() + "registerEmail " + registerRequest.getEmail() + " sessionId " + request.getSession().getId();
+        return "registerBlogUser " + registerRequest.getRegisterName() + " registerEmail " + registerRequest.getEmail() + " sessionId " + request.getSession().getId();
     }
 
     private boolean validateFormCondition(RegisterRequest registerRequest) {

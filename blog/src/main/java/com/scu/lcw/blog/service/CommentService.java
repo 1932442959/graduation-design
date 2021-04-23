@@ -1,5 +1,6 @@
 package com.scu.lcw.blog.service;
 
+import com.scu.lcw.blog.entity.CommentDO;
 import com.scu.lcw.blog.entity.DailyDO;
 import com.scu.lcw.blog.pojo.dto.CommentDTO;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
@@ -20,5 +21,13 @@ public interface CommentService {
     List<CommentDTO> findArticleComment(Long articleId);
 
     Result addDailyComment(CommentRequest commentRequest, HttpServletRequest request);
+
+    Result likeComment(CommentDO commentDO, HttpServletRequest request);
+
+    Result dislikeComment(CommentDO commentDO, HttpServletRequest request);
+
+    Result getLikeCommentList(HttpServletRequest request);
+
+    Result getDislikeCommentList(HttpServletRequest request);
 
 }

@@ -22,6 +22,10 @@ public enum RspEnum {
 
     error_validate_time_out(9508, "验证码已过期"),
 
+    error_not_login(9509, "请先登录再进行点赞、评论等功能"),
+
+    error_so_quick(9510, "点击太频繁"),
+
     error_password(9502, "密码错误");
 
     private int code;

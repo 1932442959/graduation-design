@@ -55,4 +55,15 @@ public class DailyDO {
     public static DailyBO buildDailyVO(DailyDO dailyDO) {
         return new DailyBO().setDailyDO(dailyDO);
     }
+
+    public static DailyDO buildDailyDO(DailyLikeRequest dailyLikeRequest) {
+        return new DailyDO()
+                .setDailyId(dailyLikeRequest.getDailyId())
+                .setDailyLike(dailyLikeRequest.getDailyLike())
+                .setDailyDislike(dailyLikeRequest.getDailyDislike())
+                .setDailyContent(dailyLikeRequest.getDailyContent())
+                .setDailyAvator(dailyLikeRequest.getDailyAvator())
+                .setDailyUsername(dailyLikeRequest.getDailyUsername())
+                .setDailyNetname(dailyLikeRequest.getDailyNetname());
+    }
 }

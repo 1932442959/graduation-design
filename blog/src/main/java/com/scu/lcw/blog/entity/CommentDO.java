@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
@@ -51,6 +50,17 @@ public class CommentDO {
     private String parentNetname;
 
     private String commentAvator;
+
+    public static CommentDO buildDailyDOByLikeRequest(CommentLikeRequest commentLikeRequest) {
+        return new CommentDO()
+                .setCommentId(commentLikeRequest.getCommentId())
+                .setCommentLike(commentLikeRequest.getCommentLike())
+                .setCommentDislike(commentLikeRequest.getCommentDislike())
+                .setCommentContent(commentLikeRequest.getCommentContent())
+                .setCommentAvator(commentLikeRequest.getCommentAvator())
+                .setCommentUsername(commentLikeRequest.getCommentUsername())
+                .setCommentNetname(commentLikeRequest.getCommentNetname());
+    }
 
     public static CommentDO buildCommentDO(CommentRequest commentRequest, BlogUserDO blogUserDO) {
         return new CommentDO()

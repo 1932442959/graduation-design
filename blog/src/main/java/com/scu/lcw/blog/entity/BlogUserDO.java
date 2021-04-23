@@ -43,6 +43,10 @@ public class BlogUserDO {
 
     private String userAvator;
 
+    private String userLikeDaily;
+
+    private String userDislikeDaily;
+
     public static BlogUserDO buildBlogUserDO(RegisterRequest registerRequest) {
         return new BlogUserDO()
                 .setUserName(registerRequest.getRegisterName())
@@ -50,6 +54,7 @@ public class BlogUserDO {
                 .setUserEmail(registerRequest.getEmail())
                 .setCreateTime(LocalDateTime.now())
                 .setEnabled("Y")
-                .setUserNetname(registerRequest.getRegisterName());
+                .setUserNetname(registerRequest.getRegisterName())
+                .setUserAvator("https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/avator/默认头像.jpg?versionId=CAEQDhiBgMC06MHoxxciIDUyNDBkYTA3ZTY1NjQwMzc5ZmZjYmQzYzUyMzJkYjBm");
     }
 }

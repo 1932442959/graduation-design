@@ -6,15 +6,19 @@ import com.scu.lcw.blog.entity.BlogUserDO;
 import com.scu.lcw.blog.entity.MessageDO;
 import com.scu.lcw.blog.mapper.MessageMapper;
 import com.scu.lcw.blog.pojo.request.MessageRequest;
+import com.scu.lcw.blog.pojo.vo.MessageVO;
 import com.scu.lcw.blog.service.MessageService;
+import com.scu.lcw.blog.util.LocalDateUtils;
 import com.scu.lcw.blog.util.PageUtils;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -32,20 +36,26 @@ public class MessageServiceImpl extends BaseController implements MessageService
     @Resource
     private PageUtils<MessageDO> pageUtils;
 
+    @Resource
+    private LocalDateUtils localDateUtils;
+
     @Override
     public Result findAllMessage(MessageRequest messageRequest) {
-        return Result.data(
-                pageUtils.listPagination(
-                        messageMapper.selectList(new QueryWrapper<>())
-                                .stream()
-                                .sorted(Comparator.comparing(MessageDO::getCreateTime).reversed())
-                                .collect(Collectors.toList()),
-                        messageRequest.getCurrentPage(),
-                        messageRequest.getPageSize()
-                )
+        List<MessageDO> allMessage = messageMapper.selectList(new QueryWrapper<>())
+                .stream()
+                .sorted(Comparator.comparing(MessageDO::getCreateTime).reversed())
+                .map(messageDO -> messageDO
+                        .setDate(localDateUtils.parseCreateTime(messageDO.getCreateTime()))
+                        .setDateTime(localDateUtils.dateTimeHHmmss(messageDO.getCreateTime())))
+                .collect(Collectors.toList());
+
+        return Result.data(new MessageVO()
+                .setMessageList(pageUtils.listPagination(allMessage, messageRequest.getCurrentPage(), messageRequest.getPageSize()))
+                .setTotal(allMessage.size())
         );
     }
 
+    @Transactional
     @Override
     public Result addMessage(MessageRequest messageRequest, HttpServletRequest request) {
         BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
