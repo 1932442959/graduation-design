@@ -2,8 +2,9 @@ package com.scu.lcw.blog.controller;
 
 import com.scu.lcw.blog.entity.BlogUserDO;
 import com.scu.lcw.blog.entity.DailyDO;
-import com.scu.lcw.blog.entity.DailyLikeRequest;
+import com.scu.lcw.blog.pojo.request.DailyLikeRequest;
 import com.scu.lcw.blog.pojo.request.DailyRequest;
+import com.scu.lcw.blog.pojo.request.LoginMessageRequest;
 import com.scu.lcw.blog.service.DailyService;
 import com.scu.lcw.blog.util.AntiBrushUtils;
 import com.scu.lcw.common.response.Result;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author: lucw
@@ -38,40 +38,40 @@ public class DailyController extends BaseController {
     }
 
     @PostMapping("/likedaily")
-    public Result likeDaily(DailyLikeRequest dailyLikeRequest, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result likeDaily(DailyLikeRequest dailyLikeRequest) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(dailyLikeRequest.getBlogUserLoginFlag());
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
-        if (antiBrushUtils.buttonAntiBrush(request)) {
-            Result result = dailyService.likeDaily(DailyDO.buildDailyDO(dailyLikeRequest), request);
-            this.updateBlogUserMessage(request);
+        if (antiBrushUtils.buttonAntiBrush(dailyLikeRequest.getBlogUserLoginFlag())) {
+            Result result = dailyService.likeDaily(DailyDO.buildDailyDO(dailyLikeRequest), dailyLikeRequest.getBlogUserLoginFlag());
+            this.updateBlogUserMessage(dailyLikeRequest.getBlogUserLoginFlag());
             return result;
         }
         return Result.ok();
     }
 
     @PostMapping("/dislikedaily")
-    public Result dislikeDaily(DailyLikeRequest dailyLikeRequest, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result dislikeDaily(DailyLikeRequest dailyLikeRequest) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(dailyLikeRequest.getBlogUserLoginFlag());
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
-        if (antiBrushUtils.buttonAntiBrush(request)) {
-            Result result = dailyService.dislikeDaily(DailyDO.buildDailyDO(dailyLikeRequest), request);
-            this.updateBlogUserMessage(request);
+        if (antiBrushUtils.buttonAntiBrush(dailyLikeRequest.getBlogUserLoginFlag())) {
+            Result result = dailyService.dislikeDaily(DailyDO.buildDailyDO(dailyLikeRequest), dailyLikeRequest.getBlogUserLoginFlag());
+            this.updateBlogUserMessage(dailyLikeRequest.getBlogUserLoginFlag());
             return result;
         }
         return Result.ok();
     }
 
     @RequestMapping("/likedailylist")
-    public Result getLikeDailyList(HttpServletRequest request) {
-        return dailyService.getLikeDailyList(request);
+    public Result getLikeDailyList(LoginMessageRequest loginMessageRequest) {
+        return dailyService.getLikeDailyList(loginMessageRequest.getBlogUserLoginFlag());
     }
 
     @RequestMapping("/dislikedailylist")
-    public Result getDislikeDailyList(HttpServletRequest request) {
-        return dailyService.getDislikeDailyList(request);
+    public Result getDislikeDailyList(LoginMessageRequest loginMessageRequest) {
+        return dailyService.getDislikeDailyList(loginMessageRequest.getBlogUserLoginFlag());
     }
 }

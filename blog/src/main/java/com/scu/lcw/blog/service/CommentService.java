@@ -6,7 +6,6 @@ import com.scu.lcw.blog.pojo.dto.CommentDTO;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
 import com.scu.lcw.common.response.Result;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -20,14 +19,14 @@ public interface CommentService {
 
     List<CommentDTO> findArticleComment(Long articleId);
 
-    Result addDailyComment(CommentRequest commentRequest, HttpServletRequest request);
+    Result addDailyComment(CommentRequest commentRequest);
 
-    Result likeComment(CommentDO commentDO, HttpServletRequest request);
+    Result likeComment(CommentDO commentDO, String blogUserLoginFlag);
 
-    Result dislikeComment(CommentDO commentDO, HttpServletRequest request);
+    Result dislikeComment(CommentDO commentDO, String blogUserLoginFlag);
 
-    Result getLikeCommentList(HttpServletRequest request);
+    Result getLikeCommentList(String blogUserLoginFlag);
 
-    Result getDislikeCommentList(HttpServletRequest request);
+    Result getDislikeCommentList(String blogUserLoginFlag);
 
 }

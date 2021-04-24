@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,8 +56,8 @@ public class MessageServiceImpl extends BaseController implements MessageService
 
     @Transactional
     @Override
-    public Result addMessage(MessageRequest messageRequest, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result addMessage(MessageRequest messageRequest) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(messageRequest.getBlogUserLoginFlag());
         Integer addResult = messageMapper.insert(MessageDO.buildMessageDO(blogUserMessage, messageRequest.getMessageContent()));
         return Result.data(addResult);
     }

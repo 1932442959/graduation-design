@@ -1,19 +1,20 @@
-package com.scu.lcw.blog.pojo.request;
+package com.scu.lcw.blog.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import com.scu.lcw.common.page.BasePage;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ArticleRequest extends BasePage {
+public class CardVO {
 
-    private String labelName;
+    private Integer commentNum;
 
-    private Long articleId;
+    private Integer dailyNum;
+
+    private Integer articleNum;
 
 }

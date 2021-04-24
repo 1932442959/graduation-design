@@ -1,19 +1,20 @@
-package com.scu.lcw.blog.pojo.request;
+package com.scu.lcw.blog.pojo.vo;
 
+import com.scu.lcw.blog.entity.ReportDO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import com.scu.lcw.common.page.BasePage;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ArticleRequest extends BasePage {
+public class ReportVO {
 
-    private String labelName;
+    private Integer total;
 
-    private Long articleId;
-
+    private List<ReportDO> reportList;
 }

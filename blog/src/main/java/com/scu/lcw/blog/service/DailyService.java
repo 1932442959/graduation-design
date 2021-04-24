@@ -1,12 +1,8 @@
 package com.scu.lcw.blog.service;
 
 import com.scu.lcw.blog.entity.DailyDO;
-import com.scu.lcw.blog.pojo.bo.DailyBO;
 import com.scu.lcw.blog.pojo.request.DailyRequest;
-import com.scu.lcw.blog.pojo.vo.DailyVO;
 import com.scu.lcw.common.response.Result;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author: lucw
@@ -17,11 +13,11 @@ public interface DailyService {
 
     Result findAllDaily(DailyRequest dailyRequest);
 
-    Result likeDaily(DailyDO dailyD, HttpServletRequest request);
+    Result likeDaily(DailyDO dailyD, String blogUserLoginFlag);
 
-    Result dislikeDaily(DailyDO dailyDO, HttpServletRequest request);
+    Result dislikeDaily(DailyDO dailyDO, String blogUserLoginFlag);
 
-    Result getLikeDailyList(HttpServletRequest request);
+    Result getLikeDailyList(String blogUserLoginFlag);
 
-    Result getDislikeDailyList(HttpServletRequest request);
+    Result getDislikeDailyList(String blogUserLoginFlag);
 }

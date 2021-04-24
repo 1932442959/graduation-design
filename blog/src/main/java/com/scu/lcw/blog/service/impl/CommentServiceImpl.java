@@ -15,13 +15,10 @@ import com.scu.lcw.common.response.Result;
 import com.scu.lcw.common.response.RspEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -74,15 +71,15 @@ public class CommentServiceImpl extends BaseController implements CommentService
     }
 
     @Override
-    public Result addDailyComment(CommentRequest commentRequest, HttpServletRequest request) {
-        int insertResult = commentMapper.insert(CommentDO.buildCommentDO(commentRequest, this.getBlogUserMessage(request)));
+    public Result addDailyComment(CommentRequest commentRequest) {
+        int insertResult = commentMapper.insert(CommentDO.buildCommentDO(commentRequest, this.getBlogUserMessage(commentRequest.getBlogUserLoginFlag())));
         return Result.data(insertResult);
     }
 
     @Override
     @Transactional
-    public synchronized Result likeComment(CommentDO commentDO, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public synchronized Result likeComment(CommentDO commentDO, String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
@@ -105,8 +102,8 @@ public class CommentServiceImpl extends BaseController implements CommentService
 
     @Override
     @Transactional
-    public synchronized Result dislikeComment(CommentDO commentDO, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public synchronized Result dislikeComment(CommentDO commentDO, String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
@@ -128,8 +125,8 @@ public class CommentServiceImpl extends BaseController implements CommentService
     }
 
     @Override
-    public Result getLikeCommentList(HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result getLikeCommentList(String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         String likeComment = blogUserMapper.selectList(new QueryWrapper<BlogUserDO>()
                 .eq("user_id", blogUserMessage.getUserId()))
                 .get(0)
@@ -141,8 +138,8 @@ public class CommentServiceImpl extends BaseController implements CommentService
     }
 
     @Override
-    public Result getDislikeCommentList(HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result getDislikeCommentList(String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         String dislikeComment = blogUserMapper.selectList(new QueryWrapper<BlogUserDO>()
                 .eq("user_id", blogUserMessage.getUserId()))
                 .get(0)

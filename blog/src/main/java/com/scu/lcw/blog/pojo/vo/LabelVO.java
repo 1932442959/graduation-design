@@ -1,8 +1,5 @@
 package com.scu.lcw.blog.pojo.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.scu.lcw.blog.entity.LabelDO;
 import com.scu.lcw.common.response.BaseVO;
 import lombok.AllArgsConstructor;

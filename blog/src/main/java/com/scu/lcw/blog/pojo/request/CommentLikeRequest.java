@@ -1,4 +1,4 @@
-package com.scu.lcw.blog.entity;
+package com.scu.lcw.blog.pojo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,5 +30,7 @@ public class CommentLikeRequest {
     private String date;
 
     private String dateTime;
+
+    private String blogUserLoginFlag;
 
 }

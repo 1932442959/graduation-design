@@ -1,10 +1,7 @@
 package com.scu.lcw.blog.pojo.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import page.BasePage;
+import com.scu.lcw.common.page.BasePage;
 
 /**
  * @author: lucw

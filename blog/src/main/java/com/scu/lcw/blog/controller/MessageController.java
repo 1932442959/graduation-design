@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author: lucw
@@ -36,13 +34,13 @@ public class MessageController extends BaseController {
     }
 
     @RequestMapping("/addmessage")
-    public Result addNewMessage(MessageRequest messageRequest, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result addNewMessage(MessageRequest messageRequest) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(messageRequest.getBlogUserLoginFlag());
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
-        if (antiBrushUtils.buttonAntiBrush(request)) {
-            return messageService.addMessage(messageRequest, request);
+        if (antiBrushUtils.buttonAntiBrush(messageRequest.getBlogUserLoginFlag())) {
+            return messageService.addMessage(messageRequest);
         }
         return Result.ok();
     }

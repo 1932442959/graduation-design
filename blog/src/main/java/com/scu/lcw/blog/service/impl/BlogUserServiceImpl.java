@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +39,7 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
     private RequestUtils requestUtils;
 
     @Override
-    public Result login(LoginRequest loginRequest, HttpServletRequest request) {
+    public Result login(LoginRequest loginRequest) {
         log.info("loginRequest: " + loginRequest.toString());
 
         Optional<BlogUserDO> user = blogUserMapper.selectList(new QueryWrapper<BlogUserDO>()
@@ -57,20 +56,20 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
         }
 
         if (user.get().getUserPassword().equals(loginRequest.getLoginPassword())) {
-            this.saveBlogUserMessage(request, user.get());
-            return Result.ok();
+            String blogUserLoginFlag = this.saveBlogUserMessage(user.get());
+            return Result.data(blogUserLoginFlag);
         }
 
         return Result.fail(RspEnum.error_password);
     }
 
     @Override
-    public Result getEmailValidateStr(RegisterRequest registerRequest, HttpServletRequest request) {
+    public Result getEmailValidateStr(RegisterRequest registerRequest) {
         log.info("registerRequest: " + registerRequest.toString());
-        String ipAddress = requestUtils.getIpAddress(request);
-        log.info("request-ipAddress: " + ipAddress);
+//        String ipAddress = requestUtils.getIpAddress(request);
+//        log.info("request-ipAddress: " + ipAddress);
 
-        String validateStrAntiBrushKey = "validateStrAntiBrushKeyIp " + ipAddress;
+        String validateStrAntiBrushKey = "validateStrAntiBrushKeyEmail " + registerRequest.getEmail();
         ValueOperations valueOperations = redisTemplate.opsForValue();
         if (valueOperations.get(validateStrAntiBrushKey) != null) {
             return Result.fail(RspEnum.error_time_not_enough);
@@ -88,11 +87,10 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
             String validateStr = mailUtils.sendMail(registerRequest.getEmail());
             //60s过期 防刷
             valueOperations.set(validateStrAntiBrushKey, 1, 60, TimeUnit.SECONDS);
-            request.getSession().setAttribute(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
             //五分钟过期
-            valueOperations.set(getRegisterBlogUserSessionKey(registerRequest, request), validateStr, 300L, TimeUnit.MINUTES);
-            //打印该SessionId下的注册用户名对应验证码SessionKey
-            log.info(getRegisterBlogUserSessionKey(registerRequest, request), validateStr);
+            valueOperations.set(getRegisterBlogUserSessionKey(registerRequest), validateStr, 300L, TimeUnit.MINUTES);
+            //打印该注册用户名对应验证码SessionKey
+            log.info(getRegisterBlogUserSessionKey(registerRequest), validateStr);
             return Result.data(validateStr);
         }
 
@@ -101,7 +99,7 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
 
     @Override
     @Transactional
-    public synchronized Result register(RegisterRequest registerRequest, HttpServletRequest request) {
+    public synchronized Result register(RegisterRequest registerRequest) {
         log.info("registerRequest: " + registerRequest.toString());
 
         boolean sameUser = blogUserMapper.selectList(new QueryWrapper<>())
@@ -113,14 +111,14 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
         }
 
         if (validateFormRegisterCondition(registerRequest)) {
-            return doRegisterBlogUser(registerRequest, request);
+            return doRegisterBlogUser(registerRequest);
         }
 
         return Result.fail(RspEnum.error_form);
     }
 
-    private String getRegisterBlogUserSessionKey(RegisterRequest registerRequest, HttpServletRequest request) {
-        return "registerBlogUser " + registerRequest.getRegisterName() + " registerEmail " + registerRequest.getEmail() + " sessionId " + request.getSession().getId();
+    private String getRegisterBlogUserSessionKey(RegisterRequest registerRequest) {
+        return "registerValidateKeyEmail" + registerRequest.getEmail();
     }
 
     private boolean validateFormCondition(RegisterRequest registerRequest) {
@@ -142,13 +140,13 @@ public class BlogUserServiceImpl extends BaseController implements BlogUserServi
         return flag;
     }
 
-    private Result doRegisterBlogUser(RegisterRequest registerRequest, HttpServletRequest request) {
+    private Result doRegisterBlogUser(RegisterRequest registerRequest) {
         //验证码
-        String validateStr = (String) request.getSession().getAttribute(getRegisterBlogUserSessionKey(registerRequest, request));
         ValueOperations valueOperations = redisTemplate.opsForValue();
+        String validateStr = (String) valueOperations.get(getRegisterBlogUserSessionKey(registerRequest));
         if (validateStr.equals(registerRequest.getValidateEmail())) {
             //判断是否过期
-            if (valueOperations.get(getRegisterBlogUserSessionKey(registerRequest, request)) == null) {
+            if (valueOperations.get(getRegisterBlogUserSessionKey(registerRequest)) == null) {
                 return Result.fail(RspEnum.error_validate_time_out);
             }
             blogUserMapper.insert(BlogUserDO.buildBlogUserDO(registerRequest));

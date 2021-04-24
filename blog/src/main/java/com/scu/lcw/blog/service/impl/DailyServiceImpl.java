@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,8 +77,8 @@ public class DailyServiceImpl extends BaseController implements DailyService {
 
     @Transactional
     @Override
-    public synchronized Result dislikeDaily(DailyDO dailyDO, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public synchronized Result dislikeDaily(DailyDO dailyDO, String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }
@@ -101,8 +100,8 @@ public class DailyServiceImpl extends BaseController implements DailyService {
     }
 
     @Override
-    public Result getLikeDailyList(HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result getLikeDailyList(String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         String likeDaily = blogUserMapper.selectList(new QueryWrapper<BlogUserDO>()
                 .eq("user_id", blogUserMessage.getUserId()))
                 .get(0)
@@ -114,8 +113,8 @@ public class DailyServiceImpl extends BaseController implements DailyService {
     }
 
     @Override
-    public Result getDislikeDailyList(HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public Result getDislikeDailyList(String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         String dislikeDaily = blogUserMapper.selectList(new QueryWrapper<BlogUserDO>()
                 .eq("user_id", blogUserMessage.getUserId()))
                 .get(0)
@@ -128,8 +127,8 @@ public class DailyServiceImpl extends BaseController implements DailyService {
 
     @Transactional
     @Override
-    public synchronized Result likeDaily(DailyDO dailyDO, HttpServletRequest request) {
-        BlogUserDO blogUserMessage = this.getBlogUserMessage(request);
+    public synchronized Result likeDaily(DailyDO dailyDO, String blogUserLoginFlag) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(blogUserLoginFlag);
         if (blogUserMessage == null) {
             return Result.fail(RspEnum.error_not_login);
         }

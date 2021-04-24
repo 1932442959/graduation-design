@@ -11,32 +11,28 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-/**
- * @author: lucw
- * @description: 该类的描述
- * @date: 2021/4/20 10:23
- */
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("report")
-public class ReportDO {
+@TableName("progress")
+public class ProgressDO {
 
-    @TableId(value = "report_id", type = IdType.AUTO)
-    private Long reportId;
+    @TableId(value = "progress_id", type = IdType.AUTO)
+    private Long progressId;
 
-    private String reportTitle;
-
-    private String reportContent;
+    private String progressContent;
 
     private LocalDateTime createTime;
 
-    private LocalDateTime updateTime;
+    private String progressNetname;
+
+    private String progressAvator;
 
     @TableField(exist = false)
     private String date;
 
     @TableField(exist = false)
     private String dateTime;
+
 }

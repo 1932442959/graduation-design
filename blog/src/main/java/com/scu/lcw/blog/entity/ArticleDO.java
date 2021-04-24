@@ -4,13 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.scu.lcw.blog.pojo.Enum.ArticleTypeEnum;
+import com.scu.lcw.common.enums.ArticleStatusEnum;
+import com.scu.lcw.common.enums.ArticleTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -48,9 +50,14 @@ public class ArticleDO {
 
     private ArticleTypeEnum articleType;
 
+    private ArticleStatusEnum articleStatus;
+
+    private String articlePassword;
+
     @TableField(exist = false)
     private String articleCreateTime;
 
     @TableField(exist = false)
     private String articleUpdateTime;
+
 }

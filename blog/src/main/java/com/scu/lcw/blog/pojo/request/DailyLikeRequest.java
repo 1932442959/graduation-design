@@ -1,4 +1,4 @@
-package com.scu.lcw.blog.entity;
+package com.scu.lcw.blog.pojo.request;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
@@ -33,4 +33,6 @@ public class DailyLikeRequest {
     private String date;
 
     private String dateTime;
+
+    private String blogUserLoginFlag;
 }

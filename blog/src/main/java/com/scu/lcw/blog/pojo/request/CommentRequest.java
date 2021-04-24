@@ -21,4 +21,6 @@ public class CommentRequest {
 
     private String commentContent;
 
+    private String blogUserLoginFlag;
+
 }

@@ -1,7 +1,7 @@
 package com.scu.lcw.blog.pojo.request;
 
 import lombok.Data;
-import page.BasePage;
+import com.scu.lcw.common.page.BasePage;
 
 /**
  * @author: lucw
@@ -12,4 +12,6 @@ import page.BasePage;
 public class MessageRequest extends BasePage {
 
     private String messageContent;
+
+    private String blogUserLoginFlag;
 }

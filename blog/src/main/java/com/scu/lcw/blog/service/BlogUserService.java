@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface BlogUserService {
 
-    Result login(LoginRequest loginRequest, HttpServletRequest request);
+    Result login(LoginRequest loginRequest);
 
-    Result getEmailValidateStr(RegisterRequest registerRequest, HttpServletRequest request);
+    Result getEmailValidateStr(RegisterRequest registerRequest);
 
-    Result register(RegisterRequest registerRequest, HttpServletRequest request);
+    Result register(RegisterRequest registerRequest);
 }

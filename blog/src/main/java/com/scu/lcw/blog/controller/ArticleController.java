@@ -26,4 +26,9 @@ public class ArticleController {
     public Result getArticleComment(ArticleRequest articleRequest) {
         return articleService.getArticleList(articleRequest);
     }
+
+    @RequestMapping("/searcharticle")
+    public Result searchArticle(ArticleRequest articleRequest) {
+        return articleService.searchArticle(articleRequest);
+    }
 }

@@ -3,6 +3,7 @@ package com.scu.lcw.blog.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.scu.lcw.blog.pojo.request.CommentLikeRequest;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
 import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
 import lombok.AllArgsConstructor;

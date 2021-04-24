@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.scu.lcw.blog.pojo.bo.DailyBO;
+import com.scu.lcw.blog.pojo.request.DailyLikeRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,9 @@ public class DailyDO {
     private String dailyUsername;
 
     private String dailyNetname;
+
+    @TableField(exist = false)
+    private String blogUserLoginFlag;
 
     @TableField(exist = false)
     private Integer commentLength;

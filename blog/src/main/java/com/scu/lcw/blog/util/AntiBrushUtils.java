@@ -1,6 +1,7 @@
 package com.scu.lcw.blog.util;
 
 import com.scu.lcw.blog.controller.BaseController;
+import com.scu.lcw.blog.pojo.request.RegisterRequest;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,18 +19,22 @@ public class AntiBrushUtils extends BaseController {
     @Resource
     private RedisTemplate redisTemplate;
 
-    public Boolean registerAntiBrush(HttpServletRequest request) {
+    public Boolean registerAntiBrush(RegisterRequest registerRequest) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
-        if (valueOperations.get("register-anti-brush" + request.getSession().getId()) != null) {
+        if (valueOperations.get("register-anti-brush" + valueOperations.get(registerAntiBrushKey(registerRequest))) != null) {
             return false;
         }
-        valueOperations.set("register-anti-brush" + request.getSession().getId(), "register-anti-brush", 500, TimeUnit.MILLISECONDS);
+        valueOperations.set(registerAntiBrushKey(registerRequest), "register-anti-brush", 500, TimeUnit.MILLISECONDS);
         return true;
     }
 
-    public Boolean buttonAntiBrush(HttpServletRequest request) {
+    private String registerAntiBrushKey(RegisterRequest registerRequest) {
+        return "register-anti-brush" + registerRequest.getRegisterName() + registerRequest.getRegisterPassword() + registerRequest.getEmail() + registerRequest.getValidateEmail();
+    }
+
+    public Boolean buttonAntiBrush(String blogUserLoginFlag) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
-        String userName = this.getBlogUserMessage(request).getUserName();
+        String userName = this.getBlogUserMessage(blogUserLoginFlag).getUserName();
         if (valueOperations.get("button-anti-brush" + userName) != null) {
             return false;
         }

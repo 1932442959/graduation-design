@@ -1,4 +1,4 @@
-package com.scu.lcw.blog.pojo.Enum;
+package com.scu.lcw.common.enums;
 
 public enum ArticleTypeEnum {
 

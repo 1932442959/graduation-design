@@ -14,5 +14,6 @@ public interface MessageService {
 
     Result findAllMessage(MessageRequest messageRequest);
 
-    Result addMessage(MessageRequest messageRequest, HttpServletRequest request);
+    Result addMessage(MessageRequest messageRequest);
+
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @TableName("blog_user")
-public class BlogUserDO {
+public class BlogUserDO implements Serializable {
 
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;

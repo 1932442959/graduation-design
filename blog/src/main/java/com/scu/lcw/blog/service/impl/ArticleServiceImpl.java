@@ -1,7 +1,6 @@
 package com.scu.lcw.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scu.lcw.blog.entity.ArticleDO;
 import com.scu.lcw.blog.entity.LabelDO;
 import com.scu.lcw.blog.mapper.ArticleMapper;
@@ -66,6 +65,22 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Result getArticleComment(ArticleRequest articleRequest) {
         return Result.data(commentService.findArticleComment(articleRequest.getArticleId()));
+    }
+
+    @Override
+    public Result searchArticle(ArticleRequest articleRequest) {
+        List<ArticleDO> articleList = articleMapper.selectList(new QueryWrapper<ArticleDO>()
+                .like("article_title", articleRequest.getLabelName())
+                .or()
+                .like("article_label", articleRequest.getLabelName()))
+                .stream()
+                .sorted(Comparator.comparing(ArticleDO::getCreateTime).reversed())
+                .collect(Collectors.toList());
+        return Result.data(new ArticleVO().setArticleList(
+                pageUtils.listPagination(articleList,
+                        articleRequest.getCurrentPage(),
+                        articleRequest.getPageSize()))
+                .setTotal(articleList.size()));
     }
 
     private Result findArticleByParentLabel(LabelDO label, ArticleRequest articleRequest) {

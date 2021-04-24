@@ -9,4 +9,6 @@ public interface ArticleService {
 
     Result getArticleComment(ArticleRequest articleRequest);
 
+    Result searchArticle(ArticleRequest articleRequest);
+
 }
