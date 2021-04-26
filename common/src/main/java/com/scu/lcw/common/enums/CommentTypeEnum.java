@@ -1,4 +1,4 @@
-package com.scu.lcw.blog.pojo.request;
+package com.scu.lcw.common.enums;
 
 /**
  * @author: lucw

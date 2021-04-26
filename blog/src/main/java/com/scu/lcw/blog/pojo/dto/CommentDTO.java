@@ -1,8 +1,8 @@
 package com.scu.lcw.blog.pojo.dto;
 
 import com.scu.lcw.blog.entity.CommentDO;
-import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
 import com.scu.lcw.blog.util.LocalDateUtils;
+import com.scu.lcw.common.enums.CommentTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

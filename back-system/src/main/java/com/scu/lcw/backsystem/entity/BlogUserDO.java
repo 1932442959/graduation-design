@@ -1,9 +1,8 @@
-package com.scu.lcw.blog.entity;
+package com.scu.lcw.backsystem.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.scu.lcw.blog.pojo.request.RegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,15 +48,4 @@ public class BlogUserDO implements Serializable {
     private String userDislikeDaily;
 
     private String manager;
-
-    public static BlogUserDO buildBlogUserDO(RegisterRequest registerRequest) {
-        return new BlogUserDO()
-                .setUserName(registerRequest.getRegisterName())
-                .setUserPassword(registerRequest.getRegisterPassword())
-                .setUserEmail(registerRequest.getEmail())
-                .setCreateTime(LocalDateTime.now())
-                .setEnabled("Y")
-                .setUserNetname(registerRequest.getRegisterName())
-                .setUserAvator("https://my-blog-lucw.oss-cn-beijing.aliyuncs.com/image/avator/默认头像.jpg?versionId=CAEQDhiBgMC06MHoxxciIDUyNDBkYTA3ZTY1NjQwMzc5ZmZjYmQzYzUyMzJkYjBm");
-    }
 }

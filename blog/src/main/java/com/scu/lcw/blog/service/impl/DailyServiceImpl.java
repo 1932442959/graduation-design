@@ -211,13 +211,13 @@ public class DailyServiceImpl extends BaseController implements DailyService {
         return;
     }
 
-    private Integer getTotalDaily() {
-        return dailyMapper.selectCount(new QueryWrapper<>());
-    }
-
     private DailyBO computeCommentLength(DailyBO dailyBO) {
         dailyBO.getDailyDO().setCommentLength(dailyBO.getCommentList().size());
         return dailyBO;
+    }
+
+    private Integer getTotalDaily() {
+        return dailyMapper.selectCount(new QueryWrapper<>());
     }
 
     private List<DailyDO> findDailyPage(DailyRequest dailyRequest) {

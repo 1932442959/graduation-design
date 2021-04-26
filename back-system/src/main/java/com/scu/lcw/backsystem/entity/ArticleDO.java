@@ -1,23 +1,19 @@
-package com.scu.lcw.blog.entity;
+package com.scu.lcw.backsystem.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.scu.lcw.blog.pojo.bo.ArticleBO;
-import com.scu.lcw.blog.pojo.bo.DailyBO;
-import com.scu.lcw.blog.pojo.request.ArticleLikeRequest;
-import com.scu.lcw.blog.pojo.request.DailyLikeRequest;
+import com.scu.lcw.backsystem.pojo.request.ArticleRequest;
 import com.scu.lcw.common.enums.ArticleStatusEnum;
 import com.scu.lcw.common.enums.ArticleTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import sun.java2d.pipe.AAShapePipe;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -65,21 +61,23 @@ public class ArticleDO {
     @TableField(exist = false)
     private String articleUpdateTime;
 
-    @TableField(exist = false)
-    private Integer commentLength;
-
-    @TableField(exist = false)
-    List<LabelDO> labelList;
-
-    public static ArticleBO buildArticleBO(ArticleDO articleDO) {
-        return new ArticleBO().setArticleDO(articleDO);
-    }
-
-    public static ArticleDO buildArticleDO(ArticleLikeRequest articleLikeRequest) {
+    public static ArticleDO buildArticle(ArticleRequest articleRequest) {
+        System.out.println(articleRequest);
         return new ArticleDO()
-                .setArticleId(articleLikeRequest.getArticleId())
-                .setArticleLike(articleLikeRequest.getArticleLike())
-                .setArticleDislike(articleLikeRequest.getArticleDislike());
+                .setArticleTitle(articleRequest.getTitle())
+                .setArticleDescription(articleRequest.getDescription())
+                .setArticleLabel(articleRequest.getLabel())
+                .setCoverImage(articleRequest.getCoverImgUrl())
+                .setFirstImage(articleRequest.getFirstImgUrl())
+                .setCreateTime(LocalDateTime.now())
+                .setArticleLike(0L)
+                .setArticleDislike(0L)
+                .setArticleRank(0.0)
+                .setArticleContent(articleRequest.getContent())
+                .setArticleClick(0L)
+                .setArticleType(articleRequest.getTypeEnum())
+                .setArticleStatus(ArticleStatusEnum.DRAFT)
+                .setArticlePassword(articleRequest.getPassword());
     }
 
 }

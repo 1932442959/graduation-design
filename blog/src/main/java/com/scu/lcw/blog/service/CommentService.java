@@ -21,6 +21,8 @@ public interface CommentService {
 
     Result addDailyComment(CommentRequest commentRequest);
 
+    Result addArticleComment(CommentRequest commentRequest);
+
     Result likeComment(CommentDO commentDO, String blogUserLoginFlag);
 
     Result dislikeComment(CommentDO commentDO, String blogUserLoginFlag);

@@ -25,6 +25,10 @@ public class Result {
         return new Result(200, "", "success");
     }
 
+    public static Result nothing() {
+        return new Result(200, "", null);
+    }
+
     public static Result data(Object result) {
 
         return new Result(200, "", result);

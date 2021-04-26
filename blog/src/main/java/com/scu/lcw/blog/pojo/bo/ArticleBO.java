@@ -1,8 +1,8 @@
-package com.scu.lcw.blog.pojo.vo;
+package com.scu.lcw.blog.pojo.bo;
 
 import com.scu.lcw.blog.entity.ArticleDO;
-import com.scu.lcw.blog.pojo.bo.ArticleBO;
-import com.scu.lcw.common.response.BaseVO;
+import com.scu.lcw.blog.entity.DailyDO;
+import com.scu.lcw.blog.pojo.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ArticleVO extends BaseVO {
+public class ArticleBO {
 
-    private Integer total;
+    private ArticleDO articleDO;
 
-    private List<ArticleBO> articleList;
+    private Boolean showComment;
+
+    private List<CommentDTO> commentList;
 
 }

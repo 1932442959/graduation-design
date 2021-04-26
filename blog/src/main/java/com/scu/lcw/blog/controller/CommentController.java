@@ -38,6 +38,18 @@ public class CommentController extends BaseController {
         return Result.ok();
     }
 
+    @RequestMapping("/article")
+    public Result addArticleParentComment(CommentRequest commentRequest) {
+        BlogUserDO blogUserMessage = this.getBlogUserMessage(commentRequest.getBlogUserLoginFlag());
+        if (blogUserMessage == null) {
+            return Result.fail(RspEnum.error_not_login);
+        }
+        if (antiBrushUtils.buttonAntiBrush(commentRequest.getBlogUserLoginFlag())) {
+            return commentService.addArticleComment(commentRequest);
+        }
+        return Result.ok();
+    }
+
     @RequestMapping("/likecomment")
     public Result likeComment(CommentLikeRequest commentLikeRequest) {
         BlogUserDO blogUserMessage = this.getBlogUserMessage(commentLikeRequest.getBlogUserLoginFlag());

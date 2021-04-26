@@ -8,6 +8,7 @@ import com.scu.lcw.blog.util.AntiBrushUtils;
 import com.scu.lcw.common.response.Result;
 import com.scu.lcw.common.response.RspEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -53,6 +54,9 @@ public class BlogUserController extends BaseController {
 
     @RequestMapping("/getcurrent")
     public Result getCurrentBlogUser(LoginMessageRequest loginMessageRequest) {
+        if (StringUtils.isEmpty(loginMessageRequest.getBlogUserLoginFlag())) {
+            return Result.nothing();
+        }
         return Result.data(this.getBlogUserMessage(loginMessageRequest.getBlogUserLoginFlag()));
     }
 }

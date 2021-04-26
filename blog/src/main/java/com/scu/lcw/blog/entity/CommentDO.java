@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.scu.lcw.blog.pojo.request.CommentLikeRequest;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
-import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
+import com.scu.lcw.common.enums.CommentTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -73,6 +73,22 @@ public class CommentDO {
                 .setCommentContent(commentRequest.getCommentContent())
                 .setRefrenceId(commentRequest.getRefrenceId())
                 .setCommentType(CommentTypeEnum.DAILY)
+                .setCreateTime(LocalDateTime.now())
+                .setParentUsername(commentRequest.getParentUsername())
+                .setParentNetname(commentRequest.getParentNetname())
+                .setCommentAvator(blogUserDO.getUserAvator());
+    }
+
+    public static CommentDO buildCommentDOArticle(CommentRequest commentRequest, BlogUserDO blogUserDO) {
+        return new CommentDO()
+                .setCommentLike(0L)
+                .setCommentDislike(0L)
+                .setParentId(commentRequest.getParentId())
+                .setCommentNetname(blogUserDO.getUserNetname())
+                .setCommentUsername(blogUserDO.getUserName())
+                .setCommentContent(commentRequest.getCommentContent())
+                .setRefrenceId(commentRequest.getRefrenceId())
+                .setCommentType(CommentTypeEnum.ARTICLE)
                 .setCreateTime(LocalDateTime.now())
                 .setParentUsername(commentRequest.getParentUsername())
                 .setParentNetname(commentRequest.getParentNetname())

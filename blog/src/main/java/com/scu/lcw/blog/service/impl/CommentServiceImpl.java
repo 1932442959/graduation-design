@@ -9,8 +9,8 @@ import com.scu.lcw.blog.mapper.BlogUserMapper;
 import com.scu.lcw.blog.mapper.CommentMapper;
 import com.scu.lcw.blog.pojo.dto.CommentDTO;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
-import com.scu.lcw.blog.pojo.request.CommentTypeEnum;
 import com.scu.lcw.blog.service.CommentService;
+import com.scu.lcw.common.enums.CommentTypeEnum;
 import com.scu.lcw.common.response.Result;
 import com.scu.lcw.common.response.RspEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +73,12 @@ public class CommentServiceImpl extends BaseController implements CommentService
     @Override
     public Result addDailyComment(CommentRequest commentRequest) {
         int insertResult = commentMapper.insert(CommentDO.buildCommentDO(commentRequest, this.getBlogUserMessage(commentRequest.getBlogUserLoginFlag())));
+        return Result.data(insertResult);
+    }
+
+    @Override
+    public Result addArticleComment(CommentRequest commentRequest) {
+        int insertResult = commentMapper.insert(CommentDO.buildCommentDOArticle(commentRequest, this.getBlogUserMessage(commentRequest.getBlogUserLoginFlag())));
         return Result.data(insertResult);
     }
 
