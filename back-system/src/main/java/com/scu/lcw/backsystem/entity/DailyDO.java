@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.scu.lcw.backsystem.controller.UserController;
+import com.scu.lcw.backsystem.pojo.request.DailyRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.tomcat.jni.Local;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**

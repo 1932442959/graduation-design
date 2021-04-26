@@ -22,3 +22,10 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true&&allowPublicKeyRetrieval=true
     username: root
     password: 123456
+#    username: blog
+#    password: 123456
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml,classpath*:/com/scu/lcw/blog/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
