@@ -9,25 +9,15 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Data
+@TableName("system_runtime")
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("friend")
-public class FriendDO {
+public class SystemRuntimeDO {
 
-    @TableId(value = "friend_id", type = IdType.AUTO)
-    private Long friendId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-    private String friendUsername;
-
-    private String friendNetname;
-
-    private String friendAvator;
-
-    private String friendIntro;
-
-    private String friendUrl;
-
-    private String needOperate;
+    private Long runTime;
 
 }

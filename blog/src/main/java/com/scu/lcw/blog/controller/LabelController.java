@@ -1,5 +1,6 @@
 package com.scu.lcw.blog.controller;
 
+import com.scu.lcw.blog.pojo.request.LabelRequest;
 import com.scu.lcw.blog.service.LabelService;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -25,4 +26,25 @@ public class LabelController {
     public Result getAllList() {
         return labelService.getAllLabelList();
     }
+
+    @RequestMapping("/addparent")
+    public Result addparent(LabelRequest labelRequest) {
+        return labelService.addParent(labelRequest);
+    }
+
+    @RequestMapping("/addchild")
+    public Result addchild(LabelRequest labelRequest) {
+        return labelService.addChild(labelRequest);
+    }
+
+    @RequestMapping("/update")
+    public Result update(LabelRequest labelRequest) {
+        return labelService.update(labelRequest);
+    }
+
+    @RequestMapping("/delete")
+    public Result delete(LabelRequest labelRequest) {
+        return labelService.delete(labelRequest);
+    }
+
 }

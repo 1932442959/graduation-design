@@ -16,4 +16,5 @@ public interface MessageService {
 
     Result addMessage(MessageRequest messageRequest);
 
+    Result delete(MessageRequest messageRequest);
 }

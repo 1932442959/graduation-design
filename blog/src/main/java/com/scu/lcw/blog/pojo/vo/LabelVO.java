@@ -17,22 +17,29 @@ public class LabelVO extends BaseVO {
 
     private Long labelId;
 
+    private Long id;
+
+    private String label;
+
     private String labelName;
 
     private String labelColor;
 
     private Long parentId;
 
-    private List<LabelVO> childList;
+    private List<LabelVO> children;
 
     private Integer articleNum;
 
     public static LabelVO buildLabelVO(LabelDO labelDO) {
         return new LabelVO()
+                .setId(labelDO.getLabelId())
+                .setLabel(labelDO.getLabelName())
                 .setLabelId(labelDO.getLabelId())
                 .setLabelName(labelDO.getLabelName())
                 .setLabelColor(labelDO.getLabelColor())
-                .setParentId(labelDO.getParentId());
+                .setParentId(labelDO.getParentId())
+                .setArticleNum(labelDO.getArticleNum());
     }
 
 }

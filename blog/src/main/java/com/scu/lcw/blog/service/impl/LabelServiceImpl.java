@@ -1,8 +1,11 @@
 package com.scu.lcw.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.scu.lcw.blog.entity.ArticleDO;
 import com.scu.lcw.blog.entity.LabelDO;
+import com.scu.lcw.blog.mapper.ArticleMapper;
 import com.scu.lcw.blog.mapper.LabelMapper;
+import com.scu.lcw.blog.pojo.request.LabelRequest;
 import com.scu.lcw.blog.pojo.vo.LabelVO;
 import com.scu.lcw.blog.service.LabelService;
 import com.scu.lcw.common.response.RedisKeyName;
@@ -13,6 +16,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -29,41 +33,84 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Result getLabelList() {
-        String redisKey = RedisKeyName.PARENT_LABEL_LIST;
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        if (valueOperations.get(redisKey) != null) {
-            return Result.data(valueOperations.get(redisKey));
-        }
         List<LabelDO> labelList = labelMapper.selectList(new QueryWrapper<LabelDO>().ne("parent_id", 0L));
-        valueOperations.set(redisKey, labelList, 24L, TimeUnit.HOURS);
         return Result.data(labelList);
     }
 
     @Override
     public Result getAllLabelList() {
-
-        String redisKey = RedisKeyName.ALL_LABEL_LIST;
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        if (valueOperations.get(redisKey) != null) {
-            return Result.data(valueOperations.get(redisKey));
-        }
-
         List<LabelDO> parentLabelList = labelMapper.selectList(new QueryWrapper<LabelDO>().eq("parent_id", 0L));
         List<LabelDO> childLabelList = labelMapper.selectList(new QueryWrapper<LabelDO>().ne("parent_id", 0L));
         //将子节点拼装到对应根节点标签
         List<LabelVO> resultList = parentLabelList.stream()
+                .map(labelDO -> labelDO.setArticleNum(this.fingArticleNum(labelDO)))
                 .map(LabelVO::buildLabelVO)
                 .map(labelVO ->
-                        labelVO.setChildList(
+                        labelVO.setChildren(
                                 childLabelList.stream()
                                         .map(LabelVO::buildLabelVO)
                                         .filter(childLabel -> childLabel.getParentId().equals(labelVO.getLabelId()))
                                         .collect(Collectors.toList())
                         )
                 )
-                .map(labelVO -> labelVO.setArticleNum(labelVO.getChildList().size()))
                 .collect(Collectors.toList());
-        valueOperations.set(redisKey, resultList, 24L, TimeUnit.HOURS);
         return Result.data(resultList);
+    }
+
+    @Override
+    public Result addParent(LabelRequest labelRequest) {
+        return Result.data(labelMapper.insert(new LabelDO()
+                .setParentId(0L)
+                .setLabelName(labelRequest.getLabelName())
+                .setLabelColor(labelRequest.getLabelColor())));
+    }
+
+    @Override
+    public Result addChild(LabelRequest labelRequest) {
+        return Result.data(labelMapper.insert(new LabelDO()
+                .setLabelColor(labelRequest.getLabelColor())
+                .setLabelName(labelRequest.getLabelName())
+                .setParentId(labelRequest.getParentId())));
+    }
+
+    @Override
+    public Result update(LabelRequest labelRequest) {
+        return Result.data(labelMapper.update(new LabelDO()
+                        .setParentId(labelRequest.getParentId())
+                        .setLabelName(labelRequest.getLabelName())
+                        .setLabelColor(labelRequest.getLabelColor())
+                , new QueryWrapper<LabelDO>().eq("label_id", labelRequest.getLabelId())));
+    }
+
+    @Override
+    public Result delete(LabelRequest labelRequest) {
+        return Result.data(labelMapper.delete(new QueryWrapper<LabelDO>().eq("label_id", labelRequest.getLabelId())));
+    }
+
+    @Resource
+    private ArticleMapper articleMapper;
+
+    private Integer fingArticleNum(LabelDO label) {
+        List<LabelDO> childLabelList = labelMapper.selectList(new QueryWrapper<LabelDO>()
+                .eq("parent_id", label.getLabelId()));
+
+        if (childLabelList.size() == 1) {
+            return articleMapper.selectList(
+                    new QueryWrapper<ArticleDO>()
+                            .like("article_label", childLabelList.get(0).getLabelName())).size();
+        }
+
+        return childLabelList.stream()
+                .map(LabelDO::getLabelName)
+                .map(labelName -> articleMapper.selectList(
+                        new QueryWrapper<ArticleDO>()
+                                .like("article_label", labelName))
+                        .stream()
+                        .filter(articleDO -> Arrays.asList(articleDO.getArticleLabel().split(",")).contains(labelName))
+                        .collect(Collectors.toList())
+                )
+                .flatMap(List::stream)
+                .distinct()
+                .collect(Collectors.toList()).size();
     }
 }

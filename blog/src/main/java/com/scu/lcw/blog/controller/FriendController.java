@@ -1,5 +1,7 @@
 package com.scu.lcw.blog.controller;
 
+import com.scu.lcw.blog.mapper.FriendMapper;
+import com.scu.lcw.blog.pojo.request.FriendRequest;
 import com.scu.lcw.blog.service.FriendService;
 import com.scu.lcw.common.response.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -21,4 +23,23 @@ public class FriendController {
         return friendService.getFriendList();
     }
 
+    @RequestMapping("/addapply")
+    public Result addApply(FriendRequest friendRequest) {
+        return friendService.addApply(friendRequest);
+    }
+
+    @RequestMapping("/findapply")
+    public Result findApply() {
+        return friendService.findApply();
+    }
+
+    @RequestMapping("/save")
+    public Result save(FriendRequest friendRequest) {
+        return friendService.save(friendRequest);
+    }
+
+    @RequestMapping("/delete")
+    public Result delete(FriendRequest friendRequest) {
+        return friendService.delete(friendRequest);
+    }
 }

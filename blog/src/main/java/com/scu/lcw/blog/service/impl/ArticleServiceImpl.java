@@ -175,6 +175,13 @@ public class ArticleServiceImpl extends BaseController implements ArticleService
         return Result.data(Arrays.asList(dislikeDaily.split(",")));
     }
 
+    @Override
+    public void addVisit(ArticleRequest articleRequest) {
+        ArticleDO article = articleMapper.selectList(new QueryWrapper<ArticleDO>()
+                .eq("article_id", articleRequest.getArticleId())).get(0);
+        articleMapper.update(article.setArticleClick(article.getArticleClick() + 1L), new QueryWrapper<ArticleDO>().eq("article_id", article.getArticleId()));
+    }
+
     private void increDislike(ArticleDO articleDO, String userDislikeDaily, BlogUserDO blogUser) {
         List<String> dailyDislike = Arrays.asList(userDislikeDaily.split(","));
         if (dailyDislike.contains(String.valueOf(articleDO.getArticleId()))) {

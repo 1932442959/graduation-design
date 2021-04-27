@@ -61,4 +61,9 @@ public class MessageServiceImpl extends BaseController implements MessageService
         Integer addResult = messageMapper.insert(MessageDO.buildMessageDO(blogUserMessage, messageRequest.getMessageContent()));
         return Result.data(addResult);
     }
+
+    @Override
+    public Result delete(MessageRequest messageRequest) {
+        return Result.data(messageMapper.delete(new QueryWrapper<MessageDO>().eq("message_id", messageRequest.getMessageId())));
+    }
 }

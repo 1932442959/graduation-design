@@ -50,6 +50,16 @@ public class CommentController extends BaseController {
         return Result.ok();
     }
 
+    @RequestMapping("/delete")
+    public Result deleteComment(CommentRequest commentRequest) {
+        return commentService.delete(commentRequest);
+    }
+
+    @RequestMapping("/findall")
+    public Result findAllComment(CommentRequest commentRequest) {
+        return commentService.findAll(commentRequest);
+    }
+
     @RequestMapping("/likecomment")
     public Result likeComment(CommentLikeRequest commentLikeRequest) {
         BlogUserDO blogUserMessage = this.getBlogUserMessage(commentLikeRequest.getBlogUserLoginFlag());

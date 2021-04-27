@@ -36,7 +36,7 @@ public class ProgressServiceImpl implements ProgressService {
         return Result.data(progressMapper.insert(
                 new ProgressDO()
                         .setProgressContent(progressRequest.getProgressContent())
-                        .setProgressNetname(manager.getUserNetname())
+                        .setProgressNetname(manager.getUserName())
                         .setProgressAvator(manager.getUserAvator())
                         .setCreateTime(LocalDateTime.now())));
     }

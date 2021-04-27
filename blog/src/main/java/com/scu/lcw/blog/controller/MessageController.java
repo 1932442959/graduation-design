@@ -44,4 +44,9 @@ public class MessageController extends BaseController {
         }
         return Result.ok();
     }
+
+    @RequestMapping("/delete")
+    public Result deleteNewMessage(MessageRequest messageRequest) {
+        return messageService.delete(messageRequest);
+    }
 }

@@ -8,26 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("friend")
-public class FriendDO {
+@TableName("system_visit")
+public class SystemVisitDO {
 
-    @TableId(value = "friend_id", type = IdType.AUTO)
-    private Long friendId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-    private String friendUsername;
+    private Long homeVisit;
 
-    private String friendNetname;
-
-    private String friendAvator;
-
-    private String friendIntro;
-
-    private String friendUrl;
-
-    private String needOperate;
+    private LocalDateTime createTime;
 
 }

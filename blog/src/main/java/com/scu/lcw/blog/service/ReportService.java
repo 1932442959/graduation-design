@@ -12,4 +12,10 @@ public interface ReportService {
 
     Result findAllReport(ReportRequest reportRequest);
 
+    Result deleteReport(ReportRequest reportRequest);
+
+    Result addReport(ReportRequest reportRequest);
+
+    Result updateReport(ReportRequest reportRequest);
+
 }

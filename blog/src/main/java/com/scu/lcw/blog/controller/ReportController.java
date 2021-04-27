@@ -26,4 +26,19 @@ public class ReportController {
     public Result findReportList(ReportRequest reportRequest) {
         return reportService.findAllReport(reportRequest);
     }
+
+    @RequestMapping("/add")
+    public Result addReportList(ReportRequest reportRequest) {
+        return reportService.addReport(reportRequest);
+    }
+
+    @RequestMapping("/delete")
+    public Result deleteReportList(ReportRequest reportRequest) {
+        return reportService.deleteReport(reportRequest);
+    }
+
+    @RequestMapping("/update")
+    public Result updateReportList(ReportRequest reportRequest) {
+        return reportService.updateReport(reportRequest);
+    }
 }

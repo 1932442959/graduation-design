@@ -31,4 +31,8 @@ public interface CommentService {
 
     Result getDislikeCommentList(String blogUserLoginFlag);
 
+    Result delete(CommentRequest commentRequest);
+
+    Result findAll(CommentRequest commentRequest);
+
 }

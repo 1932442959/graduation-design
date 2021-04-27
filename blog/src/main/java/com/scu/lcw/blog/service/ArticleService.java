@@ -21,4 +21,6 @@ public interface ArticleService {
 
     Result getDislikeArticleList(String blogUserLoginFlag);
 
+    void addVisit(ArticleRequest articleRequest);
+
 }

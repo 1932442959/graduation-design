@@ -14,4 +14,6 @@ public class MessageRequest extends BasePage {
     private String messageContent;
 
     private String blogUserLoginFlag;
+
+    private Long messageId;
 }

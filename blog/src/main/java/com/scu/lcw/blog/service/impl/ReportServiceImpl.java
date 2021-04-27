@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,5 +53,27 @@ public class ReportServiceImpl implements ReportService {
                         ))
                         .setTotal(reportList.size())
         );
+    }
+
+    @Override
+    public Result deleteReport(ReportRequest reportRequest) {
+        return Result.data(reportMapper.delete(new QueryWrapper<ReportDO>().eq("reportId", reportRequest.getReportId())));
+    }
+
+    @Override
+    public Result addReport(ReportRequest reportRequest) {
+        return Result.data(reportMapper.insert(new ReportDO()
+                .setReportTitle(reportRequest.getReportTitle())
+                .setReportContent(reportRequest.getReportContent())
+                .setCreateTime(LocalDateTime.now())));
+    }
+
+    @Override
+    public Result updateReport(ReportRequest reportRequest) {
+        return Result.data(reportMapper.update(new ReportDO()
+                        .setReportTitle(reportRequest.getReportTitle())
+                        .setReportContent(reportRequest.getReportContent())
+                        .setCreateTime(LocalDateTime.now())
+                , new QueryWrapper<ReportDO>().eq("report_id", reportRequest.getReportId())));
     }
 }

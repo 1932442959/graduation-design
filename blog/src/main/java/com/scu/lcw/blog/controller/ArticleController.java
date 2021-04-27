@@ -29,6 +29,11 @@ public class ArticleController extends BaseController {
     @Resource
     private AntiBrushUtils antiBrushUtils;
 
+    @RequestMapping("/addvisit")
+    public void addVisit(ArticleRequest articleRequest){
+        articleService.addVisit(articleRequest);
+    }
+
     @RequestMapping("/getnew")
     public Result getNew(ArticleRequest articleRequest) {
         return articleService.getNewArticleList(articleRequest);

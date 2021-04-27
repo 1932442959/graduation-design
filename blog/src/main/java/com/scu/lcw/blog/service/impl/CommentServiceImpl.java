@@ -9,7 +9,9 @@ import com.scu.lcw.blog.mapper.BlogUserMapper;
 import com.scu.lcw.blog.mapper.CommentMapper;
 import com.scu.lcw.blog.pojo.dto.CommentDTO;
 import com.scu.lcw.blog.pojo.request.CommentRequest;
+import com.scu.lcw.blog.pojo.vo.CommentVO;
 import com.scu.lcw.blog.service.CommentService;
+import com.scu.lcw.blog.util.PageUtils;
 import com.scu.lcw.common.enums.CommentTypeEnum;
 import com.scu.lcw.common.response.Result;
 import com.scu.lcw.common.response.RspEnum;
@@ -39,6 +41,9 @@ public class CommentServiceImpl extends BaseController implements CommentService
 
     @Resource
     private BlogUserMapper blogUserMapper;
+
+    @Resource
+    private PageUtils pageUtils;
 
     @Override
     public List<CommentDTO> findDailyComment(DailyDO dailyDO) {
@@ -154,6 +159,19 @@ public class CommentServiceImpl extends BaseController implements CommentService
             return Result.data(Collections.emptyList());
         }
         return Result.data(Arrays.asList(dislikeComment.split(",")));
+    }
+
+    @Override
+    public Result delete(CommentRequest commentRequest) {
+        return Result.data(commentMapper.delete(new QueryWrapper<CommentDO>().eq("comment_id", commentRequest.getCommentId())));
+    }
+
+    @Override
+    public Result findAll(CommentRequest commentRequest) {
+        List<CommentDO> comments = commentMapper.selectList(new QueryWrapper<>());
+        return Result.data(new CommentVO()
+                .setCommentList(pageUtils.listPagination(comments, commentRequest.getCurrentPage(), commentRequest.getPageSize()))
+                .setTotal(comments.size()));
     }
 
     private void increDislike(CommentDO commentDO, String userDislikeComment, BlogUserDO blogUser) {
