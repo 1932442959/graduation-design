@@ -1,6 +1,7 @@
 package com.scu.lcw.blog.pojo.vo;
 
 import com.scu.lcw.blog.entity.LabelDO;
+import com.scu.lcw.blog.pojo.bo.ArticleBO;
 import com.scu.lcw.common.response.BaseVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,8 @@ public class LabelVO extends BaseVO {
 
     private Integer articleNum;
 
+    private ArticleBO articleBO;
+
     public static LabelVO buildLabelVO(LabelDO labelDO) {
         return new LabelVO()
                 .setId(labelDO.getLabelId())
@@ -40,6 +43,12 @@ public class LabelVO extends BaseVO {
                 .setLabelColor(labelDO.getLabelColor())
                 .setParentId(labelDO.getParentId())
                 .setArticleNum(labelDO.getArticleNum());
+    }
+
+    public static LabelVO buildArticleChild(ArticleBO articleBO) {
+        return new LabelVO()
+                .setArticleBO(articleBO)
+                .setLabel(articleBO.getArticleDO().getArticleTitle());
     }
 
 }

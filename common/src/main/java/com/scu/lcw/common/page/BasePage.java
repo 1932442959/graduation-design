@@ -16,4 +16,9 @@ public class BasePage {
     private int currentPage;
 
     private int total;
+
+    public BasePage(int currentPage, int pageSize) {
+        this.currentPage = currentPage;
+        this.pageSize = pageSize;
+    }
 }

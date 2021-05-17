@@ -5,8 +5,11 @@ import com.scu.lcw.blog.entity.ArticleDO;
 import com.scu.lcw.blog.entity.LabelDO;
 import com.scu.lcw.blog.mapper.ArticleMapper;
 import com.scu.lcw.blog.mapper.LabelMapper;
+import com.scu.lcw.blog.pojo.request.ArticleRequest;
 import com.scu.lcw.blog.pojo.request.LabelRequest;
+import com.scu.lcw.blog.pojo.vo.ArticleVO;
 import com.scu.lcw.blog.pojo.vo.LabelVO;
+import com.scu.lcw.blog.service.ArticleService;
 import com.scu.lcw.blog.service.LabelService;
 import com.scu.lcw.common.response.RedisKeyName;
 import com.scu.lcw.common.response.Result;
@@ -31,6 +34,9 @@ public class LabelServiceImpl implements LabelService {
     @Resource
     private RedisTemplate redisTemplate;
 
+    @Resource
+    private ArticleService articleService;
+
     @Override
     public Result getLabelList() {
         List<LabelDO> labelList = labelMapper.selectList(new QueryWrapper<LabelDO>().ne("parent_id", 0L));
@@ -50,7 +56,19 @@ public class LabelServiceImpl implements LabelService {
                                 childLabelList.stream()
                                         .map(LabelVO::buildLabelVO)
                                         .filter(childLabel -> childLabel.getParentId().equals(labelVO.getLabelId()))
-                                        .collect(Collectors.toList())
+                                        .collect(Collectors.collectingAndThen(
+                                                Collectors.toList(), labelVOS -> labelVOS.stream()
+                                                        .map(vo -> {
+                                                            ArticleRequest articleRequest = new ArticleRequest(vo.getLabelName(), 1, 10000);
+                                                            ArticleVO articleVO = (ArticleVO) articleService.getArticleList(articleRequest).getData();
+                                                            List<LabelVO> children = articleVO.getArticleList().stream()
+                                                                    .map(LabelVO::buildArticleChild)
+                                                                    .collect(Collectors.toList());
+                                                            return vo.setChildren(children);
+                                                        })
+                                                        .collect(Collectors.toList())
+                                                )
+                                        )
                         )
                 )
                 .collect(Collectors.toList());

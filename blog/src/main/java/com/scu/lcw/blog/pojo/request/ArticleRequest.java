@@ -16,4 +16,9 @@ public class ArticleRequest extends BasePage {
 
     private Long articleId;
 
+    public ArticleRequest(String labelName, int currentPage, int pageSize) {
+        super(currentPage, pageSize);
+        this.labelName = labelName;
+    }
+
 }
